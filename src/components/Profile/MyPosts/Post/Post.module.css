@@ -1,0 +1,20 @@
+.content {
+    grid-area: c;
+    background-color: whitesmoke;
+}
+
+.item {
+    color: black;
+}
+
+.ava {
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+}
+
+.like img{
+    padding-left: 80px;
+    width: 25px;
+    height: 25px;
+}
