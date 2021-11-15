@@ -7,6 +7,11 @@
     padding: 10px;
 }
 
+.dialogue img {
+    border-radius: 20px;
+    width: 50px;
+}
+
 .dialogue a {
     color: black;
     text-decoration: none;
