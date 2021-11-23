@@ -1,5 +1,4 @@
 import {v1} from "uuid";
-import {rerenderEntireTree} from "../Render";
 
 export type PostType = {
     id: string
@@ -18,6 +17,7 @@ export type MessageType = {
 
 export type ProfilePageType = {
     postData: Array<PostType>
+    newPostText: string
 }
 export type messagePageType = {
     dialoguesItemData: Array<DialoguesItemType>
@@ -33,7 +33,7 @@ export type stateType = {
     sidebar: SidebarType
 }
 
-export let state: stateType = {
+export const state: stateType = {
     profilePage: {
         postData: [
             {id: v1(), post: `Hi, how are you?`, likeNumber: 15},
@@ -41,6 +41,7 @@ export let state: stateType = {
             {id: v1(), post: `Hmm`, likeNumber: 2},
             {id: v1(), post: `Oh, yeah`, likeNumber: 202},
         ],
+        newPostText: ''
     },
     messagePage: {
         dialoguesItemData: [
@@ -63,8 +64,19 @@ export let state: stateType = {
     sidebar: {}
 }
 
-export let addPost = (post: string) => {
-    let newPost: PostType = {id: v1(), post, likeNumber: 0}
+export const addPost = () => {
+    const newPost: PostType = {id: v1(), post: state.profilePage.newPostText, likeNumber: 0}
     state.profilePage.postData.push(newPost)
-    rerenderEntireTree(state)
+    state.profilePage.newPostText = ''
+    renderTree()
+}
+export const changePostText = (newText: string) => {
+    state.profilePage.newPostText = newText
+    renderTree()
+}
+
+let renderTree = () => {}
+
+export const subscribe = (observer: ()=>void) => {
+    renderTree = observer
 }
