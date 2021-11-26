@@ -1,21 +1,19 @@
 import React from "react";
-import classes from './Profile.module.css'
 import {MyPosts} from "./MyPosts/MyPosts";
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
-import {changePostText, stateType} from "../../redux/State";
+import {ActionTypes, StateType } from "../../redux/State";
 
 
 type ProfilePropsType = {
-    stateProfile: stateType
-    addPost: ()=>void
-    changePostText: (newText: string)=>void
+    stateProfile: StateType
+    dispatch: (action: ActionTypes) => void
 }
 
-export const Profile = (props: ProfilePropsType) => {
+export const Profile = ({stateProfile, dispatch, ...props}: ProfilePropsType) => {
     return (
         <div>
             <ProfileInfo/>
-            <MyPosts stateMyPosts={props.stateProfile} addPost={props.addPost} changePostText={changePostText}/>
+            <MyPosts stateMyPosts={stateProfile} dispatch={dispatch}/>
         </div>
     )
 }

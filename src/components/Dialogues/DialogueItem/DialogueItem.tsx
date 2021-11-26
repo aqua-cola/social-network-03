@@ -8,12 +8,12 @@ type DialoguesItemPropsType = {
     ava: string
 }
 
-export const DialogueItem = (props: DialoguesItemPropsType) => {
-    let path = '/dialogues/' + props.id
+export const DialogueItem = ({id, name, ava, ...props}: DialoguesItemPropsType) => {
+    let path = '/dialogues/' + id
     return (
         <div className={classes.dialogue}>
-            <img src={props.ava} alt="404"/>
-            <NavLink to={path} activeClassName={classes.active}>{props.name}</NavLink>
+            <img src={ava} alt="404"/>
+            <NavLink to={path} activeClassName={classes.active}>{name}</NavLink>
         </div>
     )
 }

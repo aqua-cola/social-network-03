@@ -1,40 +1,53 @@
-import React, {createRef} from "react";
-import { NavLink } from "react-router-dom";
+import React, {ChangeEvent} from "react";
 import classes from './Dialogues.module.css'
 import {DialogueItem} from "./DialogueItem/DialogueItem";
 import {Message} from "./Message/Message";
-import {stateType} from "../../redux/State";
+import {ActionTypes, StateType} from "../../redux/State";
+import {changeMessageTextAC, sendMessageAC} from "../../redux/message-reducer";
 
 
 type DialoguesPropsType = {
-    stateDialogues: stateType
+    stateDialogues: StateType
+    dispatch: (action: ActionTypes) => void
 }
 
-export const Dialogues = (props: DialoguesPropsType) => {
+export const Dialogues = ({stateDialogues, dispatch, ...props}: DialoguesPropsType) => {
 
-    let dialoguesElements = props.stateDialogues.messagePage.dialoguesItemData.map(d => <DialogueItem key={d.id} id={d.id} name={d.name} ava={d.ava}/>)
-    let messageElements = props.stateDialogues.messagePage.messageData.map(m => <Message key={m.id} id={m.id} message={m.message}></Message>)
+    let dialoguesElements = stateDialogues.messagePage.dialoguesItemData.map(d => <DialogueItem key={d.id}
+                                                                                                id={d.id}
+                                                                                                name={d.name}
+                                                                                                ava={d.ava}/>)
+    let messageElements = stateDialogues.messagePage.messageData.map(m => <Message key={m.id}
+                                                                                   id={m.id}
+                                                                                   message={m.message}/>)
 
-    let correspondence = React.createRef<HTMLTextAreaElement>()
-    let addMessage = () => {
-        let text = correspondence.current?.value
-        alert(text)
+    const addMessage = () => {
+        dispatch(sendMessageAC())
     }
+    const onMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        if (e.currentTarget) {
+            let text = e.currentTarget.value
+            dispatch(changeMessageTextAC(text))
+        }
+    }
+    const messageValue = stateDialogues.messagePage.newMessageText
 
-    return(
+    return (
         <div className={classes.dialogues}>
             <div className={classes.dialogues_items}>
                 {dialoguesElements}
             </div>
             <div className={classes.messages}>
-                {messageElements}
-            </div>
-            <div>
-                <textarea ref={correspondence}></textarea>
-            </div>
-            <div>
-                <button onClick={addMessage}>Send message</button>
+                <div>
+                    {messageElements}
+                </div>
+                <div>
+                    <textarea onChange={onMessageChange}
+                              value={messageValue}
+                              placeholder={'Введите сообщение...'}/>
+                    <button onClick={addMessage}>Отправить</button>
+                </div>
             </div>
         </div>
-    )
+)
 }
